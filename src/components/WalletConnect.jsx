@@ -26,10 +26,10 @@ createWeb3Modal({ wagmiConfig, projectId, chains,
         'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa',
 
       ],
-      themeMode: 'light',
+      themeMode: 'dark',
       themeVariables: {
-        '--w3m-color-mix': 'red',
-        '--w3m-color-mix-strength': 40
+        '--w3m-color-mix': 'grey',
+        '--w3m-color-mix-strength': 20
       }
     })
 

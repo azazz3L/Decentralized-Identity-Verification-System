@@ -1,8 +1,16 @@
 import React from 'react'
 import WalletConnect from '../components/WalletConnect'
-
+// import Wallet from './Wallet';
+import {
+    ThirdwebProvider,
+    ConnectWallet,
+    metamaskWallet,
+    darkTheme,
+  } from "@thirdweb-dev/react";
 
 export default function Navbar(props) {
+
+
 
     const handleRegisterClick = () => {
         props.setIdentity(true);
@@ -11,7 +19,7 @@ export default function Navbar(props) {
     const handleW3M = () => {
         props.setIdentity(false);
     }
-
+    
 
   return (
     <>
@@ -27,7 +35,20 @@ export default function Navbar(props) {
                         <button id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick}>Register</button>
                     </li>)}
                     <li className="nav-item">
-                        <w3m-button onClick={handleW3M}/>
+                        {/* <w3m-button onClick={handleW3M}/> */}
+                        <ConnectWallet
+                            theme={darkTheme({
+                                colors: { primaryButtonBg: "#5cb0ff" },
+                              })}
+                            btnTitle={"Connect Wallet"}
+                            modalTitle={"D.I.V.S"}
+                            modalSize={"wide"}
+                            welcomeScreen={{
+                            title:
+                                "Your Gateway to Decentralized Identity",
+                            }}
+                            modalTitleIconUrl={""}
+                        />
                     </li>
                 </ul>
             </div>

@@ -1,19 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ethers } from 'ethers'
 import IPFSutils from './IPFSutils';
 import FetchIPFSData from './FetchIPFSData';
 import { encrypt } from '@metamask/eth-sig-util';
+import identityabi from '../Identityabi.json'
 
 export default function Encrypt(props) {
     let signer = null;
     let provider;
     let encryptedObjectString = null;
     
+    
     const encryptData = async() =>{
         provider = new ethers.providers.Web3Provider(window.ethereum)
+        await provider.send("eth_requestAccounts",[]);
         signer = await provider.getSigner();
-        console.log(signer);
-    
+        const signerAddress = await signer.getAddress();
+        console.log('Signer: '+signer+'Signer Address: '+signerAddress);
+        const identity = new ethers.Contract(import.meta.env.VITE_IDENTITY_CONTRACT,identityabi,signer);
+        
         document.getElementById('decryptMessage').hidden = true;
         try {
             if (!props.accountAddress)
@@ -38,7 +43,8 @@ export default function Encrypt(props) {
             const hash = ethers.utils.id(JSON.stringify(jsonObject));
             console.log("Hash of Object: " ,hash)
             // Map the Hash to Address -> if user[hash] != address = then we are good to go otherwise we are going to return Same Identity Already Exists 
-    
+            const hascheck = await identity.checkHashOwner(hash);
+            console.log('Address: '+hascheck)
            
             console.log('Public Key:', publicKey);
             encryptedObjectString = await encryptJsonObject(publicKey, jsonObject);  // Store the encrypted object string in the global variable
@@ -46,11 +52,21 @@ export default function Encrypt(props) {
             const jsonObjectReturn = await FetchIPFSData(responseData.IpfsHash);
     
             console.log(responseData.IpfsHash);
+            await identity.registerUser(responseData.IpfsHash);
             console.log('Encrypted Object:', encryptedObjectString);  // Log the encrypted object string
             console.log('Returning Object:',JSON.parse(jsonObjectReturn));
     
         } catch (error) {
-            console.error(error.message);
+            // Check error message to determine which require statement failed
+            if (error.message.includes("User already registered")) {
+                props.showAlert("USER IS ALREADY REGISTERED❌","danger");
+                
+            } else if (error.message.includes("IPFS hash already associated with another address")) {
+                alert("IPFS hash already associated with another address!");
+            } else {
+                // Handle other errors or display a general error message
+                console.error("An error occurred:", error.message);
+            }
         }
     }
 
