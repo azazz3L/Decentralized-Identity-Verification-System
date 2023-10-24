@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../src/components/Navbar';
 import Register from './components/Register';
-import { watchAccount, disconnect, getAccount } from '@wagmi/core';
 import Encrypt from './components/Encrypt';
 import { useAddress } from "@thirdweb-dev/react";
 import Alert from './components/Alert';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import SelectModal from './components/SelectModal';
 import UserData from './components/UserData';
+import TransactionSpinner from './components/TransactionSpinner';
 
 
 
 
-function Navigation() {
+function Navigation({setNetworkId,networkId}) {
   const address = useAddress();
   const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ function Navigation() {
     if (address) {
       navigate('/select');
     }else{
+    
       navigate('/');
     }
   }, [address]);
@@ -46,7 +47,6 @@ function App() {
 
   const address = useAddress();
   console.log('Current address:', address);
-
   const showAlert = (message, type) => {
     setAlert({
       message: message,
@@ -104,7 +104,7 @@ function App() {
       }
       fetchUserDetails();
     }
-  }, [userSelect, address]);
+  }, [userSelect, accountAddress,address]);
 
 
   //Network ID and Changes
@@ -133,11 +133,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    
     if (networkId && networkId !== '5') {
       showAlert('Please switch to the Goerli testnet', 'warning');
-    }else if(networkId == '5'){
-      showAlert("You are now on Goerli Testnet",'success')
-    }
+      }else if(networkId == '5'){
+        showAlert("You are now on Goerli Testnet",'success')
+      }
   }, [networkId]);
   
   return (
@@ -153,7 +154,9 @@ function App() {
           <Route exact path='/user' element={
             <>
               {loading ? (
-                    <div>Loading...</div>
+                <div className="container">
+                  <TransactionSpinner loading={loading}/>
+                  </div>
                   ) : userSelect && fetchedDetails ? (
                     <>
                       <span>Account Address: {address}</span>
@@ -167,7 +170,7 @@ function App() {
                     <>
                       <div className="container">
                         <h3>User Does Not Exists</h3>
-                        <Encrypt accountAddress={address} showAlert={showAlert} />
+                        <Encrypt accountAddress={address} showAlert={showAlert} setAccountAddress={setAccountAddress}/>
                       </div>
                     </>
                   )}

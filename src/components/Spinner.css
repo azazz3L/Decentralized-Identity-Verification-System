@@ -1,0 +1,14 @@
+.transaction-spinner {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.tick-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: green;
+}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function SelectModal(props) {
 
+
     const handleUserClick = () => {
         props.setUser(true)
     }

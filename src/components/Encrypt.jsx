@@ -4,14 +4,21 @@ import IPFSutils from './IPFSutils';
 import FetchIPFSData from './FetchIPFSData';
 import { encrypt } from '@metamask/eth-sig-util';
 import identityabi from '../Identityabi.json'
+import TransactionSpinner from './TransactionSpinner';
+
 
 export default function Encrypt(props) {
     let signer = null;
     let provider;
     let encryptedObjectString = null;
     
-    
+  
+    let [loading, setLoading] = useState(false);
+    let [transactionComplete, setTransactionComplete] = useState(false)
+
+
     const encryptData = async() =>{
+        setLoading(true);
         provider = new ethers.providers.Web3Provider(window.ethereum)
         await provider.send("eth_requestAccounts",[]);
         signer = await provider.getSigner();
@@ -52,25 +59,42 @@ export default function Encrypt(props) {
             const jsonObjectReturn = await FetchIPFSData(responseData.IpfsHash);
     
             console.log(responseData.IpfsHash);
-            await identity.registerUser(responseData.IpfsHash);
+            const txResponse = await identity.registerUser(responseData.IpfsHash);
+            const receipt = await txResponse.wait();
             
             console.log('Encrypted Object:', encryptedObjectString);  // Log the encrypted object string
             console.log('Returning Object:',JSON.parse(jsonObjectReturn));
+            
+            if(receipt.status == 1){
+                setTransactionComplete(true)
+                props.showAlert("Transaction Is Successful", 'success');
+            }else{
+                props.showAlert("Transaction Is Unuccessful", 'danger');
+            }
+            setLoading(false);
+            props.setAccountAddress(txResponse[1])
+            
     
         } catch (error) {
             // Check error message to determine which require statement failed
             if (error.message.includes("User already registered")) {
+                setLoading(false);
                 props.showAlert("USER IS ALREADY REGISTERED❌","danger");
                 
             } else if (error.message.includes("user rejected transaction")) {
                 props.showAlert("USER DENIED TRANSACTION SIGNATURE⚠️","warning");
             } else if (error.message.includes("IPFS hash already associated with another address")) {
+                setLoading(false);
                 alert("IPFS hash already associated with another address!");
             }
             else {
                 // Handle other errors or display a general error message
+                setLoading(false);
                 console.error("An error occurred:", error.message);
             }
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -93,11 +117,15 @@ export default function Encrypt(props) {
       }
 
   return (
-    <>
-    {props.accountAddress && (<div>
-       <button onClick={encryptData}>Register</button>
-        <span id="decryptMessage" hidden></span>
-    </div>
-  )}</>)
+    <div className="sweet-loading">
+    {props.accountAddress && (
+        <div>
+            <button onClick={encryptData}>Register</button>
+            <span id="decryptMessage" hidden></span>
+            <TransactionSpinner loading={loading} transactionComplete={transactionComplete} />
+        </div>
+    )}
+</div>
+  )
   
 }
