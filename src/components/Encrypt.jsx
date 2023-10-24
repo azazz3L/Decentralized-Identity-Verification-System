@@ -53,6 +53,7 @@ export default function Encrypt(props) {
     
             console.log(responseData.IpfsHash);
             await identity.registerUser(responseData.IpfsHash);
+            
             console.log('Encrypted Object:', encryptedObjectString);  // Log the encrypted object string
             console.log('Returning Object:',JSON.parse(jsonObjectReturn));
     
@@ -61,9 +62,12 @@ export default function Encrypt(props) {
             if (error.message.includes("User already registered")) {
                 props.showAlert("USER IS ALREADY REGISTERED❌","danger");
                 
+            } else if (error.message.includes("user rejected transaction")) {
+                props.showAlert("USER DENIED TRANSACTION SIGNATURE⚠️","warning");
             } else if (error.message.includes("IPFS hash already associated with another address")) {
                 alert("IPFS hash already associated with another address!");
-            } else {
+            }
+            else {
                 // Handle other errors or display a general error message
                 console.error("An error occurred:", error.message);
             }
@@ -91,7 +95,7 @@ export default function Encrypt(props) {
   return (
     <>
     {props.accountAddress && (<div>
-       <button onClick={encryptData}>Encrypt</button>
+       <button onClick={encryptData}>Register</button>
         <span id="decryptMessage" hidden></span>
     </div>
   )}</>)

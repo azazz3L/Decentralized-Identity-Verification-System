@@ -7,6 +7,7 @@ import {
     metamaskWallet,
     darkTheme,
   } from "@thirdweb-dev/react";
+  import { Link } from 'react-router-dom'
 
 export default function Navbar(props) {
 
@@ -31,8 +32,8 @@ export default function Navbar(props) {
             </button>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul className="navbar-nav">
-                    {props.register && ( <li className="nav-item "> 
-                        <button id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick}>Register</button>
+                    { props.register && (<li className="nav-item "> 
+                        <Link id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick} to='/register'>Register</Link>
                     </li>)}
                     <li className="nav-item">
                         {/* <w3m-button onClick={handleW3M}/> */}
