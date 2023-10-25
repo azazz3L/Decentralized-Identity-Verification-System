@@ -1,8 +1,10 @@
 import React from 'react';
 import { ethers } from 'ethers';
 import identityabi from '../Identityabi.json';
-
+import { useState } from 'react';
 export default async function UserData() {
+
+
     // Smart Contract 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -11,7 +13,7 @@ export default async function UserData() {
     try {
         const userDetails = await identity.getUser(await signer.getAddress());
         console.log(userDetails);
-        return userDetails; // Return userDetails if user is found
+        return userDetails // Return userDetails if user is found
     } catch (error) {
         if (error.message.includes("User not registered")) {
             console.log("User is not registered.");

@@ -22,6 +22,7 @@ export default function Navbar(props) {
     }
     
 
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -35,8 +36,18 @@ export default function Navbar(props) {
                     { props.register && (<li className="nav-item "> 
                         <Link id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick} to='/register'>Register</Link>
                     </li>)}
+
+                    {props.address && (<><li className="nav-item">
+                        <Link className="nav-link" to='/dashboard' >Dashboard</Link>
+                    </li> 
                     <li className="nav-item">
-                        {/* <w3m-button onClick={handleW3M}/> */}
+                        <Link className="nav-link" to='/select' >Select</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/approved-data">Approved Data</Link>
+                    </li>
+                    </>)}
+                    <li className="nav-item">
                         <ConnectWallet
                             theme={darkTheme({
                                 colors: { primaryButtonBg: "#5cb0ff" },

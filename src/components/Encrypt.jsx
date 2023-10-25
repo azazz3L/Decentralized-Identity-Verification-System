@@ -31,13 +31,10 @@ export default function Encrypt(props) {
             if (!props.accountAddress)
                 throw new Error("No account connected. Please connect your MetaMask wallet.");
     
-            // Now using props.accountAddress instead of accounts[0]
-            const address = props.accountAddress;
-    
             // Request the public encryption key from MetaMask
             const publicKey = await ethereum.request({
                 method: 'eth_getEncryptionPublicKey',
-                params: [address], // you must have access to the specified account
+                params: [signerAddress], // you must have access to the specified account
             });
             console.log('Public Key:', publicKey);  // Log the public key
     
@@ -59,7 +56,7 @@ export default function Encrypt(props) {
             const jsonObjectReturn = await FetchIPFSData(responseData.IpfsHash);
     
             console.log(responseData.IpfsHash);
-            const txResponse = await identity.registerUser(responseData.IpfsHash);
+            const txResponse = await identity.registerUser(responseData.IpfsHash,publicKey);
             const receipt = await txResponse.wait();
             
             console.log('Encrypted Object:', encryptedObjectString);  // Log the encrypted object string

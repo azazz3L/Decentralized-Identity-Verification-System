@@ -8,11 +8,14 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import SelectModal from './components/SelectModal';
 import UserData from './components/UserData';
 import TransactionSpinner from './components/TransactionSpinner';
+import RequestDataPage from './components/RequestDataPage';
+import UserDashboard from './components/UserDashboard';
+import ApprovedDataPage from './components/ApprovedDataPage';
 
 
 
 
-function Navigation({setNetworkId,networkId}) {
+function Navigation() {
   const address = useAddress();
   const navigate = useNavigate();
 
@@ -30,8 +33,7 @@ function Navigation({setNetworkId,networkId}) {
 
 
 function App() {
-  
-  
+
 
   const [register, setRegister] = useState(true);
   const [accountAddress, setAccountAddress] = useState('');
@@ -44,6 +46,7 @@ function App() {
   const [userAlert, setUserAlert] = useState(null);  // 'exists', 'notRegistered', or null
   const [loading, setLoading] = useState(false);
   const [networkId, setNetworkId] = useState(null);
+
 
   const address = useAddress();
   console.log('Current address:', address);
@@ -93,11 +96,13 @@ function App() {
         const details = await UserData();
         if (details) {
           setUserExists(true);
+          console.log(userExists)
           setFetchedDetails(details);
           console.log(details);
           setUserAlert('exists');
         } else {
           setUserExists(false);
+          console.log(userExists)
           setUserAlert('notRegistered');
         }
         setLoading(false);  // End loading
@@ -105,8 +110,6 @@ function App() {
       fetchUserDetails();
     }
   }, [userSelect, accountAddress,address]);
-
-
   //Network ID and Changes
 
   async function checkNetwork() {
@@ -144,12 +147,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} />
+        <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/>
         <Alert alert={alert} />
         <Navigation />
         <Routes>
           <Route exact path="/" element={<h1>Welcome To Decentralized Digital Identity Verification System</h1>} />
           <Route exact path='/register' element={<Register showIdentity={showIdentity} />} />
+          
           <Route exact path='/select' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />
           <Route exact path='/user' element={
             <>
@@ -176,12 +180,21 @@ function App() {
                   )}
             </>
           } />
-          <Route exact path='/requester' element={
-            <>
-              {requester && (<span>Account Address: {address}</span>)}
-              <Encrypt accountAddress={address} showAlert={showAlert} />
-            </>
-          } />
+          <Route exact path='/requester' element={<>
+              {loading ? (
+                <div className="container">
+                  <TransactionSpinner loading={loading}/>
+                  </div>
+                  ) : userSelect && fetchedDetails ? (<RequestDataPage />): (
+                    <>
+                      <div className="container">
+                        <h3>Requester Does Not Exists</h3>
+                        <Encrypt accountAddress={address} showAlert={showAlert} setAccountAddress={setAccountAddress}/>
+                      </div>
+                    </>
+                  )}</>} />
+          <Route exact path='/dashboard' element={<UserDashboard />} />
+          <Route exact path='/approved-data' element={<ApprovedDataPage />} />
         </Routes>
       </BrowserRouter>
     </>
