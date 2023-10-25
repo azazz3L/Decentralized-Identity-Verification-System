@@ -134,10 +134,10 @@ function App() {
 
   useEffect(() => {
     
-    if (networkId && networkId !== '5') {
-      showAlert('Please switch to the Goerli testnet', 'warning');
-      }else if(networkId == '5'){
-        showAlert("You are now on Goerli Testnet",'success')
+    if (networkId && networkId !== '11155111') {
+      showAlert('Please switch to the Sepolia Testnet⚠️', 'warning');
+      }else if(networkId == '11155111'){
+        showAlert("You are now on Sepolia Testnet✅",'success')
       }
   }, [networkId]);
   

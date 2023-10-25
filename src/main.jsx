@@ -7,11 +7,12 @@ import {
   metamaskWallet,
   walletConnect
 } from "@thirdweb-dev/react";
+import { Sepolia } from "@thirdweb-dev/chains";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
   <ThirdwebProvider
-      activeChain="goerli"
+      activeChain={ Sepolia } 
       clientId={import.meta.env.VITE_REACT_APP_CLIENT_ID}
       supportedWallets={[metamaskWallet(),
         walletConnect()]}
