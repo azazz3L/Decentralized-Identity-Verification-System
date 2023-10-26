@@ -53,11 +53,20 @@ export default function Navbar(props) {
                             btnTitle={"Connect Wallet"}
                             modalTitle={"D.I.V.S"}
                             modalSize={"wide"}
+                            
                             welcomeScreen={{
+                                img: {
+                                    src: "https://o.remove.bg/downloads/a535bd84-48e1-4105-9a3e-c71d508dd261/DALL_E_2023-10-26_16.51.16_-_Photo_rendering_of_a_next-generation_identity_card_on_a_transparent_background._The_card_showcases_advanced_biometrics__including_fingerprint_scanning-removebg-preview.png",
+                                    width: 400,
+                                    height: 400,
+                                  },
                             title:
                                 "Your Gateway to Decentralized Identity",
                             }}
-                            modalTitleIconUrl={""}
+                            modalTitleIconUrl={
+                                "https://o.remove.bg/downloads/760d0d13-73b0-4fb6-bb3d-84d4095f3a8a/DALL_E_2023-10-26_16.59.16_-_Illustration_of_a_modern_favicon_with_a_futuristic_touch_but_without_any_glare._The_design_features_a_stylized_letter_D_on_a_partially_visible_simple_-removebg-preview.png"
+                              }
+                            
                         />
                     </li>
                 </ul>
