@@ -36,7 +36,7 @@ function RouterHandler({ setRequester,showAlert,networkId }) {
 
   useEffect(() => {
     if(location.pathname === '/'){
-      showAlert("Connect Wallet to Sepolia Testnet",'primary')
+      showAlert("Connect a Wallet to ETH Sepolia Testnet",'primary')
     }
     else if (location.pathname === '/requester') {
       setRequester(true);
@@ -75,7 +75,7 @@ function App() {
       type: type
     });
 
-    if(message!='Please switch to the Goerli testnet'){
+    if(message!='Please switch to the Sepolia testnet'){
       setTimeout(() => {
         setAlert(null);
       }, 5000);

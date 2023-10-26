@@ -34,13 +34,14 @@ export default function Navbar(props) {
                     { props.register && (<li className="nav-item "> 
                         <Link id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick} to='/register'>Register</Link>
                     </li>)}
+                    
+                    {props.address && (<>
                     <li className="nav-item">
-                        <Link className="nav-link" to='/menu' >Menu</Link>
+                    <Link className="nav-link" to='/menu' >Menu</Link>
                     </li>
-                    {props.address && (<><li className="nav-item">
+                    <li className="nav-item">
                         <Link className="nav-link" to='/dashboard' >Dashboard</Link>
                     </li> 
-                   
                     <li className="nav-item">
                         <Link className="nav-link" to="/approved-data">Requests</Link>
                     </li>
