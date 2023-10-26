@@ -2,9 +2,7 @@ import React from 'react'
 import WalletConnect from '../components/WalletConnect'
 // import Wallet from './Wallet';
 import {
-    ThirdwebProvider,
     ConnectWallet,
-    metamaskWallet,
     darkTheme,
   } from "@thirdweb-dev/react";
   import { Link } from 'react-router-dom'
@@ -36,15 +34,15 @@ export default function Navbar(props) {
                     { props.register && (<li className="nav-item "> 
                         <Link id="registerButton" className="nav-link active" aria-current="page" onClick={handleRegisterClick} to='/register'>Register</Link>
                     </li>)}
-
+                    <li className="nav-item">
+                        <Link className="nav-link" to='/menu' >Menu</Link>
+                    </li>
                     {props.address && (<><li className="nav-item">
                         <Link className="nav-link" to='/dashboard' >Dashboard</Link>
                     </li> 
+                   
                     <li className="nav-item">
-                        <Link className="nav-link" to='/select' >Select</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/approved-data">Approved Data</Link>
+                        <Link className="nav-link" to="/approved-data">Requests</Link>
                     </li>
                     </>)}
                     <li className="nav-item">

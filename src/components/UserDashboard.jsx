@@ -5,8 +5,9 @@ import FetchIPFSData from "./FetchIPFSData";
 import IPFSutils from "./IPFSutils";
 import identityabi from "../Identityabi.json"
 import { encrypt } from '@metamask/eth-sig-util';
+import TransactionSpinner from "./TransactionSpinner";
 
-function UserDashboard() {
+function UserDashboard(props) {
     const [userRequests, setUserRequests] = useState([]);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -15,10 +16,13 @@ function UserDashboard() {
     const identityContract = new ethers.Contract(identityContractAddress, identityabi, signer);
     const dataRequestContract = new ethers.Contract(contractAddress, datarequestabi, signer);
     const RequestStatus = ["Pending", "Approved", "Rejected"];
-
+    const [isLoading, setIsLoading] = useState(false);
+    let [loading, setLoading] = useState(false);
+    const [noOfTransaction, setNoOfTransaction] = useState(0)
 
     useEffect(() => {
         async function fetchRequests() {
+            setIsLoading(true);
             const userAddress = await signer.getAddress();
     
             // Fetch detailed request data instead of just IDs
@@ -30,6 +34,7 @@ function UserDashboard() {
             }));
             
             setUserRequests(formattedRequests);
+            setIsLoading(false)
         }
     
         fetchRequests();
@@ -37,6 +42,8 @@ function UserDashboard() {
     
     async function handleApprove(request) {
         try {
+            setLoading(true);
+            setNoOfTransaction(3)
             const address = await signer.getAddress();
             const ipfsHash = await identityContract.getUserIPFSHash();
             const encryptedData = await FetchIPFSData(ipfsHash);
@@ -49,10 +56,12 @@ function UserDashboard() {
               });
               console.log(accounts[0])
             // Decrypt the user's data using eth_decrypt (assuming this is an encrypted JSON string)
+            
             const decryptedData = await window.ethereum.request({
                 method: 'eth_decrypt',
                 params: [encryptedData, address],
             });
+            setNoOfTransaction(2)
             const decryptedObject = JSON.parse(decryptedData)
             console.log(decryptedObject);
             
@@ -75,20 +84,24 @@ function UserDashboard() {
             const encryptedIpfsHash = await IPFSutils(encryptedForRequester);
             console.log("Encrypted Requester IPFS Hash:",encryptedIpfsHash.IpfsHash);
             // Store the encrypted IPFS hash on the Identity contract
+            
             const tx = await identityContract.setRequesterIpfsHash(encryptedIpfsHash.IpfsHash);
             await tx.wait();
-    
+            
+            setNoOfTransaction(1)
             // Finally, approve the request on the dataRequestContract
+            
             const dataRequestTx = await dataRequestContract.approveRequest(request.id); 
             await dataRequestTx.wait();
-    
+            
             // Update the status in local state
             setUserRequests(prev => prev.map(req => 
                 req.request.id === request.id ? { ...req, status: "Approved" } : req
             ));
-    
-            alert("Request approved!");
+            setLoading(false);
+            props.showAlert("Request Approved✅","success")
         } catch (err) {
+            setLoading(false);
             console.error("Error approving request:", err);
         }
     }
@@ -97,6 +110,7 @@ function UserDashboard() {
     
     async function handleReject(requestId) {
         try {
+            setLoading(true);
             const tx = await dataRequestContract.rejectRequest(requestId);
             await tx.wait();
     
@@ -104,9 +118,10 @@ function UserDashboard() {
             setUserRequests(prev => prev.map(req => 
                 req.request.id === requestId ? { ...req, status: "Rejected" } : req
             ));
-    
-            alert("Request rejected!");
+            setLoading(false);
+            props.showAlert("Request Rejected❌","danger")
         } catch (err) {
+            setLoading(false);
             console.error("Error rejecting request:", err);
         }
     }
@@ -130,6 +145,15 @@ function UserDashboard() {
       }
     
     return (
+        <>
+        {isLoading ? (
+                <div className="container">
+                    <TransactionSpinner loading={isLoading}/> {/* Assuming TransactionSpinner is your loading component */}
+                </div>
+            ) :
+    (    
+        <>
+        <h2>Dashboard</h2>
         <div>
             <ol>
                 {userRequests.map(({ request, status }, index) => (
@@ -148,7 +172,15 @@ function UserDashboard() {
                     </li>
                 ))}
             </ol>
+            {loading && (<>
+            <div className="container">
+            <span><strong>Pending Transactions....{noOfTransaction}</strong></span>
+            <TransactionSpinner loading={loading} />
+            </div>
+            </>)}
         </div>
+        </> ) }
+        </>
     );
     
     

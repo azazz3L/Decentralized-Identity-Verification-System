@@ -2,7 +2,7 @@
 import './Spinner.css';
 import MoonLoader from "react-spinners/MoonLoader";
 
-export default function TransactionSpinner({ loading,setTransactionComplete }) {
+export default function TransactionSpinner({ loading }) {
     return (
         <div className="transaction-spinner my-4">
             {loading && (

@@ -11,7 +11,7 @@ import TransactionSpinner from './components/TransactionSpinner';
 import RequestDataPage from './components/RequestDataPage';
 import UserDashboard from './components/UserDashboard';
 import ApprovedDataPage from './components/ApprovedDataPage';
-
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -21,7 +21,7 @@ function Navigation() {
 
   useEffect(() => {
     if (address) {
-      navigate('/select');
+      navigate('/menu');
     }else{
     
       navigate('/');
@@ -31,6 +31,24 @@ function Navigation() {
   return null; // This component doesn't render anything visibly.
 }
 
+function RouterHandler({ setRequester,showAlert,networkId }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.pathname === '/'){
+      showAlert("Connect Wallet to Sepolia Testnet",'primary')
+    }
+    else if (location.pathname === '/requester') {
+      setRequester(true);
+    }else if (networkId && networkId !== '11155111') {
+      showAlert('Please switch to the Sepolia Testnet⚠️', 'warning');
+      }else if(networkId == '11155111'){
+        showAlert("You are now on Sepolia Testnet✅",'success')
+      }
+  }, [location, setRequester, networkId]);
+
+  return null;  // This component doesn't render anything visibly.
+}
 
 function App() {
 
@@ -46,6 +64,7 @@ function App() {
   const [userAlert, setUserAlert] = useState(null);  // 'exists', 'notRegistered', or null
   const [loading, setLoading] = useState(false);
   const [networkId, setNetworkId] = useState(null);
+
 
 
   const address = useAddress();
@@ -88,7 +107,7 @@ function App() {
  
 
   useEffect(() => {
-    if (userSelect) { 
+    if (userSelect || requester) { 
       const fetchUserDetails = async() => {
         setLoading(true);  // Start loading
         console.log("Fetching user details...");
@@ -109,7 +128,7 @@ function App() {
       }
       fetchUserDetails();
     }
-  }, [userSelect, accountAddress,address]);
+  }, [userSelect, accountAddress,address,requester]);
   //Network ID and Changes
 
   async function checkNetwork() {
@@ -135,14 +154,7 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    
-    if (networkId && networkId !== '11155111') {
-      showAlert('Please switch to the Sepolia Testnet⚠️', 'warning');
-      }else if(networkId == '11155111'){
-        showAlert("You are now on Sepolia Testnet✅",'success')
-      }
-  }, [networkId]);
+
   
   return (
     <>
@@ -150,11 +162,12 @@ function App() {
         <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/>
         <Alert alert={alert} />
         <Navigation />
+        <RouterHandler setRequester={setRequester} showAlert={showAlert} networkId={networkId} />
         <Routes>
           <Route exact path="/" element={<h1>Welcome To Decentralized Digital Identity Verification System</h1>} />
           <Route exact path='/register' element={<Register showIdentity={showIdentity} />} />
           
-          <Route exact path='/select' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />
+          <Route exact path='/menu' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />
           <Route exact path='/user' element={
             <>
               {loading ? (
@@ -185,7 +198,7 @@ function App() {
                 <div className="container">
                   <TransactionSpinner loading={loading}/>
                   </div>
-                  ) : userSelect && fetchedDetails ? (<RequestDataPage />): (
+                  ) : requester && fetchedDetails ? (<RequestDataPage showAlert={showAlert} signerAddress={address}/>): (
                     <>
                       <div className="container">
                         <h3>Requester Does Not Exists</h3>
@@ -193,7 +206,7 @@ function App() {
                       </div>
                     </>
                   )}</>} />
-          <Route exact path='/dashboard' element={<UserDashboard />} />
+          <Route exact path='/dashboard' element={<UserDashboard showAlert={showAlert}/>} />
           <Route exact path='/approved-data' element={<ApprovedDataPage />} />
         </Routes>
       </BrowserRouter>

@@ -39,7 +39,9 @@ export default function Encrypt(props) {
             console.log('Public Key:', publicKey);  // Log the public key
     
             const jsonObject = { 
-                name: "Hitesh" 
+                name: "Hitesh",
+                phone: "923234234",
+                DOB: "12.12.12"
             };
     
             // @todo
@@ -119,7 +121,7 @@ export default function Encrypt(props) {
         <div>
             <button onClick={encryptData}>Register</button>
             <span id="decryptMessage" hidden></span>
-            <TransactionSpinner loading={loading} transactionComplete={transactionComplete} />
+            <TransactionSpinner loading={loading} />
         </div>
     )}
 </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import datarequestabi from "../Datarequestabi.json";
 import identityabi from "../Identityabi.json";
-
+import TransactionSpinner from "./TransactionSpinner";
 import decryptData from "./Decrypt";
 
 
@@ -15,10 +15,12 @@ function ApprovedDataPage() {
     const dataRequestContract = new ethers.Contract(contractAddress, datarequestabi, signer);
     const identityContract = new ethers.Contract(identityContractAddress, identityabi, signer);
     const [fetchedData, setFetchedData] = useState({});
-
+    const [dataIsFetched, setDataIsFetched] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             const loggedInRequesterAddress = await signer.getAddress();
     
             // Using hypothetical function to get requests by requester
@@ -31,6 +33,7 @@ function ApprovedDataPage() {
             }
     
             setApprovedRequests(requests);
+            setIsLoading(false); // End loading
         };
     
         fetchData();
@@ -55,6 +58,7 @@ function ApprovedDataPage() {
             const finalData = await decryptData(dataString);
             
             // Store fetched data for this user
+            setDataIsFetched(true)
             setFetchedData(prevData => ({ ...prevData, [userAddress]: finalData }));
             
             console.log("IPFS Requester Data:", dataString);
@@ -66,8 +70,14 @@ function ApprovedDataPage() {
 
    return (
     <div>
-        <h2>Approved Data Requests</h2>
-        <ol>
+          {isLoading ? (
+                <div className="container">
+                    <TransactionSpinner loading={isLoading}/> {/* Assuming TransactionSpinner is your loading component */}
+                </div>
+            ) : (
+            <>
+            <h2>Approved Data Requests</h2>
+            <ol>
             {approvedRequests.map(request => (
                 <li key={request.id}>
                     <p>Request ID: {request.id.toString()}</p>
@@ -83,6 +93,19 @@ function ApprovedDataPage() {
                 </li>
             ))}
         </ol>
+        
+        <h2>Fetched Data</h2>
+        <ol>
+    {Object.entries(fetchedData).filter(([_, data]) => data).map(([address, data]) => (
+        <li key={address}>
+        {`User Address: ${address}`}:
+            {data.name && <p>User Name: {data.name}</p>}
+            {data.phone && <p>User Phone: {data.phone}</p>}
+            {data.DOB && <p>User DOB: {data.DOB}</p>}
+            {/* Add similar checks for other properties as needed */}
+        </li>
+    ))}
+</ol></> )}
     </div>
 );
 

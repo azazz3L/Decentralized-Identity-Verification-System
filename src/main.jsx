@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import {
   ThirdwebProvider,
-  ConnectWallet,
   metamaskWallet,
   walletConnect
 } from "@thirdweb-dev/react";
