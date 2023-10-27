@@ -44,7 +44,6 @@ function RequestDataPage(props) {
 
     return (
         <>
-         <Alert alert={alert} />
         <div>
             <UserSelector onUserSelect={setSelectedUser} />
             <DataFieldsSelector onFieldsSelect={setSelectedFields} />

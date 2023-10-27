@@ -40,7 +40,7 @@ export default function Encrypt(props) {
     
             const jsonObject = { 
                 name: "Hitesh",
-                phone: "923234234",
+                phone: "212341234123",
                 DOB: "12.12.12"
             };
     
