@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Navbar from '../src/components/Navbar';
 import Register from './components/Register';
 import Encrypt from './components/Encrypt';
 import { useAddress } from "@thirdweb-dev/react";
@@ -12,8 +11,10 @@ import RequestDataPage from './components/RequestDataPage';
 import UserDashboard from './components/UserDashboard';
 import ApprovedDataPage from './components/ApprovedDataPage';
 import { useLocation } from 'react-router-dom';
-
-
+import Navbar2 from './components/Navbar';
+import {Card, NextUIProvider} from '@nextui-org/react'
+import {ThemeProvider as NextThemesProvider} from "next-themes";
+import CardUI from './components/CardUI';
 
 function Navigation() {
   const address = useAddress();
@@ -36,14 +37,14 @@ function RouterHandler({ setRequester,showAlert,networkId }) {
 
   useEffect(() => {
     if(location.pathname === '/'){
-      showAlert("Connect a Wallet to ETH Sepolia Testnet",'primary')
+      showAlert("Connect a Wallet to Polygon Mumbai Testnet",'primary')
     }
     else if (location.pathname === '/requester') {
       setRequester(true);
-    }else if (networkId && networkId !== '11155111') {
-      showAlert('Please switch to the Sepolia Testnet⚠️', 'warning');
-      }else if(networkId == '11155111'){
-        showAlert("You are now on Sepolia Testnet✅",'success')
+    }else if (networkId && networkId !== '80001') {
+      showAlert('Please switch to the Polygon Mumbai Testnet⚠️', 'warning');
+      }else if(networkId == '80001'){
+        showAlert("You are now on Polygon Mumbai Testnet✅",'success')
       }
   }, [location, setRequester, networkId]);
 
@@ -52,7 +53,7 @@ function RouterHandler({ setRequester,showAlert,networkId }) {
 
 function App() {
 
-
+  const navigate = useNavigate();
   const [register, setRegister] = useState(true);
   const [accountAddress, setAccountAddress] = useState('');
   const [showIdentity, setIdentity] = useState(false);  
@@ -64,8 +65,6 @@ function App() {
   const [userAlert, setUserAlert] = useState(null);  // 'exists', 'notRegistered', or null
   const [loading, setLoading] = useState(false);
   const [networkId, setNetworkId] = useState(null);
-
-
 
   const address = useAddress();
   console.log('Current address:', address);
@@ -158,8 +157,13 @@ function App() {
   
   return (
     <>
-      <BrowserRouter>
-        <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/>
+    <NextUIProvider navigate={navigate}>
+    <NextThemesProvider  defaultTheme="dark"
+      themes={['light', 'dark']} 
+      attribute="class"  >
+    {/* <main className="purple-dark text-foreground bg-background"> */}
+      <Navbar2 setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/>
+        {/* <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/> */}
         <Alert alert={alert} />
         <Navigation />
         <RouterHandler setRequester={setRequester} showAlert={showAlert} networkId={networkId} />
@@ -198,7 +202,8 @@ function App() {
                 <div className="container">
                   <TransactionSpinner loading={loading}/>
                   </div>
-                  ) : requester && fetchedDetails ? (<RequestDataPage showAlert={showAlert} signerAddress={address}/>): (
+                  ) : requester && fetchedDetails ? (<><RequestDataPage showAlert={showAlert} signerAddress={address}/>
+                  <CardUI /></>): (
                     <>
                       <div className="container">
                         <h3>Requester Does Not Exists</h3>
@@ -209,9 +214,11 @@ function App() {
           <Route exact path='/dashboard' element={<UserDashboard showAlert={showAlert}/>} />
           <Route exact path='/approved-data' element={<ApprovedDataPage />} />
         </Routes>
-      </BrowserRouter>
-    </>
-  );
+        {/* </main> */}
+        </NextThemesProvider>
+      </NextUIProvider>
+</>
+)
 }
 
 export default App;

@@ -6,16 +6,19 @@ import {
   metamaskWallet,
   walletConnect
 } from "@thirdweb-dev/react";
-import { Sepolia } from "@thirdweb-dev/chains";
+import "./index.css";
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  
+
+<BrowserRouter>
   <ThirdwebProvider
-      activeChain={ Sepolia } 
+      activeChain="mumbai" 
       clientId={import.meta.env.VITE_REACT_APP_CLIENT_ID}
       supportedWallets={[metamaskWallet(),
         walletConnect()]}
     >
     <App />
-    </ThirdwebProvider>,
+    </ThirdwebProvider>
+    </BrowserRouter>
 )

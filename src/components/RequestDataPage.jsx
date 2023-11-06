@@ -4,6 +4,7 @@ import UserSelector from "./UserSelector";
 import DataFieldsSelector from "./DataFieldsSelector";
 import datarequestabi from "../Datarequestabi.json"
 import TransactionSpinner from "./TransactionSpinner";
+import TransactionSpinner2 from "./TransactionSpinner2";
 
 function RequestDataPage(props) {
     const [selectedUser, setSelectedUser] = useState(null);
@@ -14,7 +15,7 @@ function RequestDataPage(props) {
     const dataRequestContract = new ethers.Contract(contractAddress, datarequestabi, signer);
     let [loading, setLoading] = useState(false);
     let [transactionComplete, setTransactionComplete] = useState(false)
-
+    let [transactionIncomplete, setTransactionIncomplete] = useState(false)
 
 
     const handleRequest = async () => {
@@ -33,12 +34,17 @@ function RequestDataPage(props) {
             const tx = await dataRequestContract.requestData(selectedUser, selectedFields);
             await tx.wait();
             setLoading(false);
+            setTransactionIncomplete(false);
+            setTransactionComplete(true);
             props.showAlert("Request Submitted Successfully✅","success")
             
         } catch (err) {
             console.error("Error submitting request:", err);
             props.showAlert("Request Unsuccessful❌","danger")
             setLoading(false);
+            setTransactionComplete(false);
+            setTransactionIncomplete(true);
+            
         }
     };
 
@@ -49,7 +55,7 @@ function RequestDataPage(props) {
             <DataFieldsSelector onFieldsSelect={setSelectedFields} />
             <button onClick={handleRequest}>Request Data</button>
         </div>
-        <TransactionSpinner loading={loading} />
+        <TransactionSpinner2 loading={loading} transactionComplete={transactionComplete} transactionIncomplete={transactionIncomplete}/>
         </>
     );
 }
