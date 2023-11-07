@@ -14,7 +14,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar2 from './components/Navbar';
 import {Card, NextUIProvider} from '@nextui-org/react'
 import {ThemeProvider as NextThemesProvider} from "next-themes";
-import CardUI from './components/CardUI';
+import RequesterCardUI from "./components/RequesterCardUI"
 
 function Navigation() {
   const address = useAddress();
@@ -202,8 +202,8 @@ function App() {
                 <div className="container">
                   <TransactionSpinner loading={loading}/>
                   </div>
-                  ) : requester && fetchedDetails ? (<><RequestDataPage showAlert={showAlert} signerAddress={address}/>
-                  <CardUI /></>): (
+                  ) : requester && fetchedDetails ? (<>
+                 <RequesterCardUI showAlert={showAlert} signerAddress={address}/></>): (
                     <>
                       <div className="container">
                         <h3>Requester Does Not Exists</h3>

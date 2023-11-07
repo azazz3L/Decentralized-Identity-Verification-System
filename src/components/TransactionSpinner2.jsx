@@ -63,6 +63,7 @@ export default function TransactionSpinner2({ loading, transactionComplete, tran
         shadow="sm" 
         radius="lg" 
         fullWidth={false} 
+        isBlurred={true}
         style={{
           minWidth: '300px',
           minHeight: '350px',

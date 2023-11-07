@@ -5,6 +5,7 @@ import DataFieldsSelector from "./DataFieldsSelector";
 import datarequestabi from "../Datarequestabi.json"
 import TransactionSpinner from "./TransactionSpinner";
 import TransactionSpinner2 from "./TransactionSpinner2";
+import RequesterCardUI from "./RequesterCardUI";
 
 function RequestDataPage(props) {
     const [selectedUser, setSelectedUser] = useState(null);
@@ -54,6 +55,7 @@ function RequestDataPage(props) {
             <UserSelector onUserSelect={setSelectedUser} />
             <DataFieldsSelector onFieldsSelect={setSelectedFields} />
             <button onClick={handleRequest}>Request Data</button>
+            
         </div>
         <TransactionSpinner2 loading={loading} transactionComplete={transactionComplete} transactionIncomplete={transactionIncomplete}/>
         </>
