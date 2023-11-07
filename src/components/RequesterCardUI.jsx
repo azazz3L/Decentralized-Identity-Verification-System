@@ -5,6 +5,7 @@ import RequesterCheckbox from "./RequesterCheckbox";
 import { ethers } from "ethers";
 import TransactionSpinner2 from "./TransactionSpinner2";
 import datarequestabi from "../Datarequestabi.json"
+import ProgressBar from "./ProgressBar";
 
 export default function CardUI(props) {
 
@@ -78,8 +79,8 @@ export default function CardUI(props) {
       <Card shadow="lg" className={`min-w-[475px] ${theme === 'dark' ? 'light' : 'dark'} bg-background text-foreground ${shadowClass}`} >
         <CardHeader>
           <div className="w-full flex flex-col">
-            <label htmlFor="user-address" className="mb-2" >
-              Enter User Ethereum Address:
+            <label htmlFor="user-address" className="mb-2" style={{ fontWeight: 'bold' }} >
+              Enter User Ethereum Address
             </label>
             <div className="flex items-center space-x-2">
              
@@ -92,9 +93,6 @@ export default function CardUI(props) {
                 value={value}
                 onValueChange={setValue}
               />
-              <div className="pt-2" >
-              <Button size="sm" className={`${buttonStyle}`}>Select User</Button>
-              </div>
             </div>
           </div>
         </CardHeader>
@@ -106,6 +104,8 @@ export default function CardUI(props) {
         <CardFooter>
           <Button size="sm" className={`${buttonStyle}`} fullWidth="true" onClick={handleRequest}>Request Data</Button>
         </CardFooter>
+        <Divider />
+        {loading && (<ProgressBar />)}
       </Card>
 </div>
 </>
