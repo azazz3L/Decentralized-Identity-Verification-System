@@ -15,6 +15,7 @@ import Navbar2 from './components/Navbar';
 import {Card, NextUIProvider} from '@nextui-org/react'
 import {ThemeProvider as NextThemesProvider} from "next-themes";
 import RequesterCardUI from "./components/RequesterCardUI"
+import Homepage from "./components/Homepage"
 
 function Navigation() {
   const address = useAddress();
@@ -168,7 +169,7 @@ function App() {
         <Navigation />
         <RouterHandler setRequester={setRequester} showAlert={showAlert} networkId={networkId} />
         <Routes>
-          <Route exact path="/" element={<h1>Welcome To Decentralized Digital Identity Verification System</h1>} />
+          <Route exact path="/" element={<Homepage />} />
           <Route exact path='/register' element={<Register showIdentity={showIdentity} />} />
           
           <Route exact path='/menu' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />

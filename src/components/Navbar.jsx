@@ -90,7 +90,7 @@ export default function Navbar2(props) {
     <Navbar isBordered position="sticky" maxWidth="full">
 
     <NavbarBrand>
-        <p style={{ fontWeight: 'bold', fontSize: '1.05rem' }}>D.I.V.S</p>
+        <Link onClick={() => handleLinkClick("homepage")} color="foreground" style={{ fontWeight: 'bold', fontSize: '1.05rem' }} href="/">D.I.V.S</Link>
     </NavbarBrand>
    {props.address && ( <NavbarContent justify="center">
         <NavbarItem isActive={activeLink === "features"}>
