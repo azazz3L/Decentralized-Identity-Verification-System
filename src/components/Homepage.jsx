@@ -3,7 +3,7 @@ import './Homepage.css'; // Make sure this CSS file contains the updated styles
 
 const Homepage = () => {
   const [title, setTitle] = useState("WELCOME TO D.I.V.S");
-
+  
   useEffect(() => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let interval = null;

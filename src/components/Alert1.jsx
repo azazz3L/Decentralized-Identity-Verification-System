@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Alert(props) {
+export default function Alert1(props) {
   return (
     <div style={{ height: '50px', overflow: 'hidden' }}>
       {props.alert && (
