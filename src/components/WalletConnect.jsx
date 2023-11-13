@@ -1,6 +1,5 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 
-import { WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet } from 'wagmi/chains'
 
 // 1. Get projectId

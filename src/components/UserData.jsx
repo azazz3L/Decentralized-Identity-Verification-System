@@ -1,7 +1,6 @@
-import React from 'react';
+
 import { ethers } from 'ethers';
 import identityabi from '../Identityabi.json';
-import { useState } from 'react';
 export default async function UserData() {
 
 

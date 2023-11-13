@@ -7,7 +7,7 @@ export default function ProgressBar() {
 
   // Define custom classNames based on the theme
   const customClassNames = {
-    indicator: theme === 'dark' ? 'bg-black' : 'bg-white', // Assuming bg-black and bg-white are defined in your CSS
+    indicator: theme === "dark" ? "bg-black" : "bg-white", // Assuming bg-black and bg-white are defined in your CSS
     // Define other parts as needed...
   };
 

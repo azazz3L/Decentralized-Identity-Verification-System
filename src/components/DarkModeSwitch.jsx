@@ -6,14 +6,14 @@ import { SunIcon } from "./SunIcon";
 
 export default function DarkModeSwitch() {
   const { theme, setTheme } = useTheme();
-  const [isDarkMode, setIsDarkMode] = useState(theme === 'dark');
+  const [isDarkMode, setIsDarkMode] = useState(theme === "dark");
 
   useEffect(() => {
-    setIsDarkMode(theme === 'dark');
+    setIsDarkMode(theme === "dark");
   }, [theme]);
 
   const handleChange = () => {
-    setTheme(isDarkMode ? 'light' : 'dark');
+    setTheme(isDarkMode ? "light" : "dark");
   };
 
   return (
@@ -22,11 +22,11 @@ export default function DarkModeSwitch() {
       size="sm"
       color="secondary"
       onChange={handleChange}
-      thumbIcon={({ isSelected , className}) =>
+      thumbIcon={({ isSelected, className }) =>
         isSelected ? (
-          <SunIcon className={className}/> // Display SunIcon when dark mode is active
+          <SunIcon className={className} /> // Display SunIcon when dark mode is active
         ) : (
-          <MoonIcon className={className}/> // Display MoonIcon when light mode is active
+          <MoonIcon className={className} /> // Display MoonIcon when light mode is active
         )
       }
     />
