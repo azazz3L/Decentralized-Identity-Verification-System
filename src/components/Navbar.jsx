@@ -88,13 +88,14 @@ export default function Navbar2(props) {
   return (
     <Navbar isBordered position="sticky" maxWidth="full">
       <NavbarBrand>
+        
         <Link
           onClick={() => handleLinkClick("homepage")}
           color="foreground"
-          style={{ fontWeight: "bold", fontSize: "1.05rem" }}
+          style={{ fontWeight: "bold", fontSize: "1.5rem" }}
           href="/"
         >
-          D.I.V.S
+          DIVS
         </Link>
       </NavbarBrand>
       {props.address && (
