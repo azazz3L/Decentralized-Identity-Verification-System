@@ -36,7 +36,7 @@ Before installing DIVS, ensure you have the following prerequisites installed on
 - **Smart Contracts**: Facilitates the mapping of user addresses to blockchain-stored CIDs and manages permissions and verifications.
 - A user-friendly interface equipped with intuitive controls for all DApp functionalities.
 
-## Installation
+### Installation
 
 ```
     git clone https://github.com/azazz3L/DIVS-React.git
