@@ -31,7 +31,6 @@ DIVS is designed as a two-phase project, focusing on secure integration with blo
 - A user-friendly interface equipped with intuitive controls for all DApp functionalities.
 
 ### Installation
-
 ```
     git clone https://github.com/azazz3L/DIVS-React.git
     cd DIVS-React
