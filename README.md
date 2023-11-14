@@ -20,24 +20,24 @@ DIVS is designed as a two-phase project, focusing on secure integration with blo
 - **Verification Requests**: Requesters can initiate identity verification requests.
 - **Smart Contract Integration**: Incorporating Permission and Verification Contracts for secure approvals and data retrieval.
 
-### Features
+## Features
 
 - **MetaMask Account Handling**: Automates mnemonic generation and private key provisioning for MetaMask.
 - **Data Encryption & IPFS**: Encrypts identity objects and interfaces with IPFS for decentralized storage.
 - **Smart Contracts**: Facilitates the mapping of user addresses to blockchain-stored CIDs and manages permissions and verifications.
 
-### Features
+## Features
 
 - A user-friendly interface equipped with intuitive controls for all DApp functionalities.
 
-### Installation
+## Installation
 ```
     git clone https://github.com/azazz3L/DIVS-React.git
     cd DIVS-React
     npm install
 ```
 
-### Usage
+## Usage
 
 - Configure MetaMask in your browser.
 - Launch DIVS:
@@ -48,6 +48,6 @@ DIVS is designed as a two-phase project, focusing on secure integration with blo
 
 - Navigate through the UI to create an identity or submit a verification request.
 
-### License
+## License
 
 DIVS is released under the MIT License. See the LICENSE file for further details.
