@@ -25,9 +25,6 @@ DIVS is designed as a two-phase project, focusing on secure integration with blo
 - **MetaMask Account Handling**: Automates mnemonic generation and private key provisioning for MetaMask.
 - **Data Encryption & IPFS**: Encrypts identity objects and interfaces with IPFS for decentralized storage.
 - **Smart Contracts**: Facilitates the mapping of user addresses to blockchain-stored CIDs and manages permissions and verifications.
-
-## Features
-
 - A user-friendly interface equipped with intuitive controls for all DApp functionalities.
 
 ## Installation
