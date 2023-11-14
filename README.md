@@ -44,7 +44,3 @@ DIVS is designed as a two-phase project, focusing on secure integration with blo
 ```
 
 - Navigate through the UI to create an identity or submit a verification request.
-
-## License
-
-DIVS is released under the MIT License. See the LICENSE file for further details.
