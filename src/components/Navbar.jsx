@@ -130,7 +130,7 @@ export default function Navbar2(props) {
         </NavbarContent>
       )}
       <NavbarContent justify="end">
-        {props.register && (
+        {props.register && props.checkMetmask && (
           <NavbarItem isActive={activeLink === "register"}>
             <Link
               color={getColor("register")}
@@ -142,7 +142,7 @@ export default function Navbar2(props) {
           </NavbarItem>
         )}
         <NavbarItem>
-          <ConnectWallet
+          {props.checkMetmask && (<ConnectWallet
             theme={theme === "dark" ? darkTheme : lightTheme}
             btnTitle={"Connect Wallet"}
             modalTitle={"D.I.V.S"}
@@ -156,7 +156,7 @@ export default function Navbar2(props) {
               title: "YOUR GATEWAY TO DECENTRALIZED IDENTITY",
             }}
             modalTitleIconUrl={"/logo.png"}
-          />
+          />)}
         </NavbarItem>
         <NavbarItem>
           <ThemeSwitcher />

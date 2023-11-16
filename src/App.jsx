@@ -141,7 +141,6 @@ function App() {
   const [register, setRegister] = useState(true);
   const [accountAddress, setAccountAddress] = useState('');
   const [showIdentity, setIdentity] = useState(false);  
-  const [alert, setAlert] = useState(null);
   const [userSelect, setUserSelect] = useState(false)
   const [requester, setRequester] = useState(false)
   const [userExists, setUserExists] = useState(false)
@@ -149,13 +148,21 @@ function App() {
   const [userAlert, setUserAlert] = useState(null);  // 'exists', 'notRegistered', or null
   const [loading, setLoading] = useState(false);
   const [networkId, setNetworkId] = useState(null);
-  
   const { theme } = useTheme();
+  const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(null);
 
 
   const address = useAddress();
   console.log('Current address:', address);
 
+  useEffect(() => {
+    // Safe check for window.ethereum
+    const checkMetaMaskInstalled = () => {
+      return typeof window.ethereum !== 'undefined';
+    };
+
+    setIsMetaMaskInstalled(checkMetaMaskInstalled());
+  }, []);
 
   useEffect(() => {
     if (address !== undefined) {
@@ -166,6 +173,8 @@ function App() {
       setRegister(true);
     }
   }, [address]);
+
+ 
 
   // watchAccount(account => {
   //   setAccountAddress(account.address ?? '');
@@ -209,25 +218,32 @@ function App() {
 
 // New Network ID Checker
 useEffect(() => {
-  const getNetworkId = async () => {
-      const currentNetworkId = await window.ethereum.request({ method: 'net_version' });
-      setNetworkId(currentNetworkId);
-  };
-
-  // Call getNetworkId to set the initial state
-  getNetworkId();
-
-  const handleChainChanged = (newChainId) => {
+  // Only run if window.ethereum is available
+  if (window.ethereum) {
+    const handleChainChanged = (newChainId) => {
       // Convert chainId from hex to decimal
       const networkId = parseInt(newChainId, 16).toString();
       setNetworkId(networkId);
-  };
+    };
 
-  // Subscribe to chainChanged event
-  window.ethereum.on('chainChanged', handleChainChanged);
+    // Subscribe to chainChanged event
+    window.ethereum.on('chainChanged', handleChainChanged);
 
-  // Clean up the event listener when the component unmounts
-  return () => window.ethereum.removeListener('chainChanged', handleChainChanged);
+    // Fetch the current network ID
+    window.ethereum.request({ method: 'net_version' })
+      .then(currentNetworkId => {
+        setNetworkId(currentNetworkId);
+      })
+      .catch(error => {
+        console.error('Error fetching network ID:', error);
+      });
+
+    // Clean up the event listener when the component unmounts
+    return () => window.ethereum.removeListener('chainChanged', handleChainChanged);
+  } else {
+    // If window.ethereum is not available, set MetaMask as not installed
+    setIsMetaMaskInstalled(false);
+  }
 }, []);
 
   toastId = useRef(null);
@@ -240,7 +256,7 @@ useEffect(() => {
       themes={['light', 'dark']} 
       attribute="class"  >
     {/* <main className="purple-dark text-foreground bg-background"> */}
-      <Navbar2 setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/>
+      <Navbar2 setRegister={setRegister} register={register} setIdentity={setIdentity} address={address} checkMetmask={isMetaMaskInstalled}/>
         {/* <Navbar setRegister={setRegister} register={register} setIdentity={setIdentity} address={address}/> */}
         <ToastContainer
           position="bottom-center"
@@ -258,7 +274,15 @@ useEffect(() => {
         <Navigation />
         <RouterHandler setRequester={setRequester} networkId={networkId}/>
         <Routes>
-          <Route exact path="/" element={<Homepage notify={notifyInfo}/>} />
+        <Route exact path="/" element={
+          isMetaMaskInstalled ? (
+            <Homepage notify={notifyInfo} />
+          ) : (
+            <div className="container">
+              <h2>MetaMask Not Installed</h2>
+            </div>
+          )
+        } />
           <Route exact path='/register' element={<Register showIdentity={showIdentity} />} />
           
           <Route exact path='/menu' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />
