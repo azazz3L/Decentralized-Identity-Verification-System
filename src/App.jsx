@@ -19,6 +19,7 @@ import { useTheme } from 'next-themes';
 import { Slide} from 'react-toastify';
 import UserPage from './components/UserPage';
 import LoadingSpinner from './components/LoadingSpinner';
+import "./components/Homepage.css"; // Make sure this CSS file contains the updated styles
 
 
   // Alert
@@ -47,6 +48,7 @@ const notifyWarnTestNet = (theme) => {
     theme: theme === 'dark' ? 'light' : 'dark',
     });
 }
+
 
 const notifyTestNetSuccess = (theme) => {
   toast.update(toastId.current,{ render: "Successfully Connected To Polygon Mumbai",
@@ -278,9 +280,9 @@ useEffect(() => {
           isMetaMaskInstalled ? (
             <Homepage notify={notifyInfo} />
           ) : (
-            <div className="container">
-              <h2>MetaMask Not Installed</h2>
-            </div>
+            <div class="flex centered">
+            <h1 class="font-bold text-4xl">Metamask Is Not Installed</h1>
+          </div>
           )
         } />
           <Route exact path='/register' element={<Register showIdentity={showIdentity} />} />

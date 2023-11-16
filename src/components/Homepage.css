@@ -1,5 +1,5 @@
 
-h1 {
+.homepageH1 {
   font-family: 'Space Mono', monospace;
   font-size: 8vw !important;
   font-weight: bold !important;
@@ -9,7 +9,8 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-  
+
+
   .centered {
     display: flex;
     justify-content: center;
