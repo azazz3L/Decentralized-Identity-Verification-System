@@ -280,8 +280,8 @@ useEffect(() => {
           isMetaMaskInstalled ? (
             <Homepage notify={notifyInfo} />
           ) : (
-            <div class="flex centered">
-            <h1 class="font-bold text-4xl">Metamask Is Not Installed</h1>
+            <div className="flex centered">
+            <h1 className="font-bold text-4xl">Metamask Is Not Installed</h1>
           </div>
           )
         } />
