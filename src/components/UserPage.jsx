@@ -33,7 +33,7 @@ export default function UserPage(props) {
     }, []);
     
 
-    return currentNetworkId === '80001' ? (
+    return currentNetworkId === '80002' ? (
         <div className="flex justify-center items-center py-20">
             <Card shadow="lg" className={`min-w-[475px] ${theme === 'dark' ? 'light' : 'dark'} bg-background text-foreground ${shadowClass} py-3`}>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">

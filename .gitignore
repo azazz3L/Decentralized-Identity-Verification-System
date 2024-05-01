@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .env
+Identity.sol
+DataRequest.sol
 
 # Editor directories and files
 .vscode/*

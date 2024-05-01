@@ -72,9 +72,7 @@ export default function Encrypt(props) {
 
       if (receipt.status == 1) {
         setTransactionComplete(true);
-        props.showAlert("Transaction Is Successful", "success");
       } else {
-        props.showAlert("Transaction Is Unuccessful", "danger");
       }
       setLoading(false);
       props.setAccountAddress(txResponse[1]);
@@ -82,9 +80,7 @@ export default function Encrypt(props) {
       // Check error message to determine which require statement failed
       if (error.message.includes("User already registered")) {
         setLoading(false);
-        props.showAlert("USER IS ALREADY REGISTERED❌", "danger");
       } else if (error.message.includes("user rejected transaction")) {
-        props.showAlert("USER DENIED TRANSACTION SIGNATURE⚠️", "warning");
       } else if (
         error.message.includes(
           "IPFS hash already associated with another address"

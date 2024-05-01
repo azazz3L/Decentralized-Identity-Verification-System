@@ -127,9 +127,9 @@ function RouterHandler({ setRequester,networkId}) {
     }
     else if (location.pathname === '/requester') {
       setRequester(true);
-    }else if (networkId && networkId !== '80001') { 
+    }else if (networkId && networkId !== '80002') { 
       notifyWarnTestNet(theme );
-      }else if(networkId == '80001'){
+      }else if(networkId == '80002'){
         notifyTestNetSuccess(theme );
       }
   }, [setRequester, networkId]);
@@ -192,28 +192,49 @@ function App() {
  
 
   useEffect(() => {
-    if (userSelect || requester) { 
-      const fetchUserDetails = async() => {
-        setLoading(true);  // Start loading
-        console.log("Fetching user details...");
-        setFetchedDetails(null);
-        const details = await UserData();
+    let isMounted = true; // Flag to manage cleanup and prevent state update if the component unmounts
+  
+    const fetchUserDetails = async () => {
+      if (!isMounted) return; // Exit if the component is already unmounted
+  
+      setLoading(true);  // Start loading
+      console.log("Fetching user details...");
+      setFetchedDetails(null); // Reset previous details
+      try {
+        const details = await UserData(); // Fetch user data
+  
+        if (!isMounted) return; // Check again before updating state
+  
         if (details) {
+          console.log("The details are", details);
           setUserExists(true);
-          console.log(userExists)
           setFetchedDetails(details);
-          console.log(details);
           setUserAlert('exists');
         } else {
           setUserExists(false);
-          console.log(userExists)
           setUserAlert('notRegistered');
         }
-        setLoading(false);  // End loading
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        if (!isMounted) return; // Check again before updating state
+  
+        setUserExists(false);
+        setUserAlert('error'); // Indicate an error occurred
+      } finally {
+        if (isMounted){ setLoading(false)
+        console.log(loading)};  // End loading only if still mounted
       }
+    };
+  
+    if (userSelect || requester) {
       fetchUserDetails();
     }
-  }, [userSelect, accountAddress,address,requester,networkId]);
+  
+    return () => {
+      isMounted = false; // Set the flag as false when the component unmounts
+    };
+  }, [userSelect, accountAddress, requester, networkId]); // Include all variables that affect the effect
+  
   //Network ID and Changes
 
 
@@ -290,9 +311,7 @@ useEffect(() => {
           <Route exact path='/menu' element={address && <SelectModal setUser={setUserSelect} setRequester={setRequester} />} />
           <Route exact path='/user' element={
             <>
-              {loading ? (
-                  <LoadingSpinner />
-                  ) : userSelect && fetchedDetails ? (
+              {loading ? <LoadingSpinner /> : userSelect && fetchedDetails ? (
                     <>
                     <UserPage address={address} userId={fetchedDetails[0].toString()} IpfsHash={fetchedDetails[2]}/>
                     </>

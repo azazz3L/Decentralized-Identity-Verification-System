@@ -13,7 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 <BrowserRouter>
   <ThirdwebProvider
-      activeChain="mumbai" 
       clientId={import.meta.env.VITE_REACT_APP_CLIENT_ID}
       supportedWallets={[metamaskWallet(),
         walletConnect()]}
