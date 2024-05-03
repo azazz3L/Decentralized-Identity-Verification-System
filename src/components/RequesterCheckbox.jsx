@@ -11,10 +11,12 @@ export default function RequesterCheckbox(props) {
         color="secondary"
         className="pt-1"
       >
-        <Checkbox value="dob">Date Of Birth</Checkbox>
-        <Checkbox value="address">Address</Checkbox>
+        <Checkbox value="aadharNumber">Aadhar Card Number</Checkbox>
         <Checkbox value="name">Name</Checkbox>
+        <Checkbox value="gender">Gender</Checkbox>
         <Checkbox value="phone">Phone</Checkbox>
+        <Checkbox value="dateOfBirth">Date Of Birth</Checkbox>
+        <Checkbox value="residentAddress">Address</Checkbox>
       </CheckboxGroup>
     </div>
   );

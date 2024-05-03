@@ -99,7 +99,8 @@ function UserDashboard(props) {
       // For this example, let's assume you have a utility function encryptWithPublicKey.
       const encryptedForRequester = await encryptJsonObject(
         requesterPublicKey,
-        decryptedObject
+        decryptedObject,
+        request.fields
       );
       console.log(encryptedForRequester);
 
@@ -177,23 +178,34 @@ function UserDashboard(props) {
     }
   }
 
-  async function encryptJsonObject(publicKey, jsonObject) {
+  async function encryptJsonObject(publicKey, jsonObject, fields) {
     console.log("Public Key:", publicKey);
-    const stringifiedObject = JSON.stringify(jsonObject);
-    console.log(stringifiedObject);
-
+    console.log("Fields to encrypt:", fields);
+  
+    // Filter out only the relevant fields from the jsonObject
+    const filteredObject = {};
+    fields.forEach((field) => {
+      if (jsonObject.hasOwnProperty(field)) {
+        filteredObject[field] = jsonObject[field];
+      }
+    });
+  
+    const stringifiedObject = JSON.stringify(filteredObject);
+    console.log("Filtered JSON object:", stringifiedObject);
+  
     // Create an object to pass to the encrypt function
     const encryptionParams = {
       publicKey: publicKey,
       data: stringifiedObject,
       version: "x25519-xsalsa20-poly1305",
     };
-
+  
     // Encrypt the stringified JSON object using eth-sig-util
     const encryptedObject = encrypt(encryptionParams);
-
+  
     return JSON.stringify(encryptedObject); // Convert the encrypted object to a string
   }
+  
 
   return (
     <>

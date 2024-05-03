@@ -20,11 +20,12 @@ import { Slide} from 'react-toastify';
 import UserPage from './components/UserPage';
 import LoadingSpinner from './components/LoadingSpinner';
 import "./components/Homepage.css"; // Make sure this CSS file contains the updated styles
+import PDFUpload from './components/PDFUpload';
 
 
   // Alert
   let toastId 
-  const notifyInfo = (theme) =>  toast.info('Connect To Polygon Mumbai', {
+  const notifyInfo = (theme) =>  toast.info('Connect To Polygon Amoy', {
     position:"bottom-center",
     autoClose: 5000,
     hideProgressBar: false,
@@ -152,7 +153,8 @@ function App() {
   const [networkId, setNetworkId] = useState(null);
   const { theme } = useTheme();
   const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(null);
-
+  const [jsonObject, setJsonObject] = useState(false)
+  const [userData, setUserData] = useState('')
 
   const address = useAddress();
   console.log('Current address:', address);
@@ -171,6 +173,7 @@ function App() {
       setAccountAddress(address);
       setIdentity(false);
       setRegister(false);
+      setJsonObject(false)
     }else {
       setRegister(true);
     }
@@ -198,6 +201,7 @@ function App() {
       if (!isMounted) return; // Exit if the component is already unmounted
   
       setLoading(true);  // Start loading
+      setJsonObject(false)
       console.log("Fetching user details...");
       setFetchedDetails(null); // Reset previous details
       try {
@@ -317,10 +321,8 @@ useEffect(() => {
                     </>
                   ) : (
                     <>
-                      <div className="container">
-                        <h3>User Does Not Exists</h3>
-                        <Encrypt accountAddress={address} setAccountAddress={setAccountAddress}/>
-                      </div>
+                      <PDFUpload accountAddress={address} setAccountAddress={setAccountAddress} jsonObject={setJsonObject} setUserData={setUserData}/>
+                      {jsonObject && <Encrypt accountAddress={address} setAccountAddress={setAccountAddress} userData={userData} />}
                     </>
                   )}
             </>
@@ -330,12 +332,10 @@ useEffect(() => {
                   <LoadingSpinner />
                   ) : requester && fetchedDetails ? (<>
                  <RequesterCardUI notifyWarn={notifyWarn} notifyDanger={notifyDanger} notifySuccess={notifySuccess} signerAddress={address}/></>): (
-                    <>
-                      <div className="container">
-                        <h3>Requester Does Not Exists</h3>
-                        <Encrypt accountAddress={address} setAccountAddress={setAccountAddress}/>
-                      </div>
-                    </>
+                <>
+                <PDFUpload accountAddress={address} setAccountAddress={setAccountAddress} jsonObject={setJsonObject} setUserData={setUserData}/>
+                  {jsonObject && <Encrypt accountAddress={address} setAccountAddress={setAccountAddress} userData={userData} />}
+                </>
                   )}</>} />
           <Route exact path='/dashboard' element={<UserDashboard notifyWarn={notifyWarn} notifyDanger={notifyDanger} notifySuccess={notifySuccess} />} />
           <Route exact path='/approved-data' element={<ApprovedDataPage notifyWarn={notifyWarn} notifyDanger={notifyDanger} notifySuccess={notifySuccess}/>} />

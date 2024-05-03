@@ -213,11 +213,27 @@ function ApprovedDataPage(props) {
                         } bg-background text-foreground ${shadowClass} `}
                       >
                         <CardBody className="overflow-visible">
-                          {data && (
+                          {console.log(data) && data && (
                             <div className="flex h-5 items-center space-x-4 py-4">
                               <h4 className="font-bold text-medium">
                                 Request ID:{" "}
                                 <span className="font-normal">{id}</span>
+                              </h4>
+                            </div>
+                          )}
+                          {data.address && (
+                            <div className="flex h-5 items-center space-x-4 py-4">
+                              <h4 className="font-bold text-medium">
+                                User Ethereum Address:{" "}
+                                <span className="font-normal">{data.address}</span>
+                              </h4>
+                            </div>
+                          )}
+                          {data.aadharNumber && (
+                            <div className="flex h-5 items-center space-x-4 py-4">
+                              <h4 className="font-bold text-medium">
+                                User Aadhar Card Number:{" "}
+                                <span className="font-normal">{data.aadharNumber}</span>
                               </h4>
                             </div>
                           )}
@@ -239,11 +255,19 @@ function ApprovedDataPage(props) {
                               </h4>
                             </div>
                           )}
-                          {data.DOB && (
+                          {data.dateOfBirth && (
                             <div className="flex h-5 items-center space-x-4 py-4">
                               <h4 className="font-bold text-medium">
                                 User Date Of Birth:{" "}
-                                <span className="font-normal">{data.DOB}</span>
+                                <span className="font-normal">{data.dateOfBirth}</span>
+                              </h4>
+                            </div>
+                          )}
+                           {data.residentAddress && (
+                            <div className="flex h-5 items-center space-x-4 py-4">
+                              <h4 className="font-bold text-medium">
+                                User Residence Address:{" "}
+                                <span className="font-normal">{data.residentAddress}</span>
                               </h4>
                             </div>
                           )}
