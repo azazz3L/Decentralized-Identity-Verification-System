@@ -4,7 +4,9 @@ import IPFSutils from "./IPFSutils";
 import FetchIPFSData from "./FetchIPFSData";
 import { encrypt } from "@metamask/eth-sig-util";
 import identityabi from "../Identityabi.json";
-import TransactionSpinner from "./TransactionSpinner";
+import {Button} from "@nextui-org/react";
+import {UserIcon} from './UserIcon';
+import {Spinner} from "@nextui-org/react";
 
 export default function Encrypt(props) {
   let signer = null;
@@ -40,23 +42,16 @@ export default function Encrypt(props) {
         params: [signerAddress], // you must have access to the specified account
       });
       console.log("Public Key:", publicKey); // Log the public key
-
-      const jsonObject = {
-        name: "Hitesh",
-        phone: "212341234123",
-        DOB: "12.12.12",
-      };
-
       // @todo
       // Hash the JSON object to find if it matches
-      const hash = ethers.utils.id(JSON.stringify(jsonObject));
+      const hash = ethers.utils.id(JSON.stringify(props.userData));
       console.log("Hash of Object: ", hash);
       // Map the Hash to Address -> if user[hash] != address = then we are good to go otherwise we are going to return Same Identity Already Exists
       const hascheck = await identity.checkHashOwner(hash);
       console.log("Address: " + hascheck);
 
       console.log("Public Key:", publicKey);
-      encryptedObjectString = await encryptJsonObject(publicKey, jsonObject); // Store the encrypted object string in the global variable
+      encryptedObjectString = await encryptJsonObject(publicKey,props.userData); // Store the encrypted object string in the global variable
       const responseData = await IPFSutils(encryptedObjectString);
       const jsonObjectReturn = await FetchIPFSData(responseData.IpfsHash);
 
@@ -119,11 +114,18 @@ export default function Encrypt(props) {
   return (
     <div className="sweet-loading">
       {props.accountAddress && (
+        <>
         <div>
-          <button onClick={encryptData}>Register</button>
+          <div className="flex items-center justify-center ">
+          <Button onClick={encryptData} color="success"  startContent={<UserIcon/>}>
+            Register User
+          </Button>
           <span id="decryptMessage" hidden></span>
-          <TransactionSpinner loading={loading} />
+         {loading && <Spinner color="secondary" className="flex items-center justify-center "/>} 
+          </div>
         </div>
+         
+      </>
       )}
     </div>
   );

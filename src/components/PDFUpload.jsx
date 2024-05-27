@@ -2,10 +2,17 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 import { useTheme } from "next-themes";
+<<<<<<< HEAD
 import { FileUploadIcon } from './FileUploadIcon';
 import LoadingSpinner from './LoadingSpinner';  // Make sure this component is correctly implemented for spinner
 
 function FileUpload() {
+=======
+import { Progress } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
+
+function FileUpload(props) {
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -13,7 +20,11 @@ function FileUpload() {
   const { theme } = useTheme();
   const shadowClass = theme === "dark" ? "shadow-white" : "shadow-black";
   const fileInputRef = useRef(null);
+<<<<<<< HEAD
 
+=======
+  let userData;
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
   const onFileChange = event => {
     setFile(event.target.files[0]);
     setUploadStatus('');
@@ -28,16 +39,38 @@ function FileUpload() {
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
     axios.post('https://guarded-eyrie-17012-94648af88a8b.herokuapp.com/upload-aadhaar', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => {
+<<<<<<< HEAD
       setExtractedData(response.data.extracted_texts[0]);
       setUploadStatus('File uploaded successfully! Check below for details.');
       setUploading(false);
+=======
+      const extractedData = response.data.extracted_texts[0];
+      userData = {
+        aadharNumber: extractedData.texts.roi_1,
+        name: extractedData.texts.roi_2,
+        dateOfBirth: extractedData.texts.roi_3,
+        gender: extractedData.texts.roi_4,
+        phoneNumber: extractedData.texts.roi_5,
+        residentAddress: extractedData.texts.roi_6.replace(/\n/g, ', ')
+      };
+      setExtractedData(extractedData);
+      setUploadStatus('File uploaded successfully! Check below for details.');
+      setUploading(false);
+      props.setUserData(userData);
+      console.log(userData);
+      props.jsonObject(true);
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
     })
     .catch(error => {
       console.error('Error uploading file', error);
@@ -61,8 +94,20 @@ function FileUpload() {
         >
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <div className="flex flex-col items-center mb-5">
+<<<<<<< HEAD
               <h4 className="font-bold text-large">USER DOES NOT EXIST</h4>
               <h4 className="font-bold text-large">Upload Your Aadhar Card PDF From UIDAI</h4>
+=======
+              <h2 className="font-bold text-large">USER DOES NOT EXIST</h2>
+              <h5 className="font-bold text-large">DOWNLOAD THE AADHAR CARD PDF FROM{" "}
+              <Link className="font-bold text-large" isExternal={true} showAnchorIcon={true} href={`https://uidai.gov.in`}>
+                  UIDAI
+              </Link>
+              </h5>
+              <h5 className="font-bold text-large">
+                UPLOAD THE DOWNLOADED AADHAR CARD PDF HERE & MAKE SURE IT IS UNLOCKED
+              </h5>
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
             </div>
             <input
               type="file"
@@ -71,16 +116,32 @@ function FileUpload() {
               style={{ display: 'none' }}
             />
             <div className="flex items-center justify-center w-full">
+<<<<<<< HEAD
               <Button color="success" auto endContent={<FileUploadIcon />} onClick={handleClick}>
+=======
+              <Button color="success" auto onClick={handleClick}>
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
                 Choose File
               </Button>
               {file && <span className="ml-2">{file.name}</span>}
             </div>
           </CardHeader>
           <CardBody className="flex flex-col items-center">
+<<<<<<< HEAD
             {file && (
               <Button onClick={onFileUpload} color="primary" disabled={uploading} auto style={{ width: '50%' }}>
                 {uploading ? <LoadingSpinner /> : 'Upload!'}
+=======
+            {file && ( uploading ? <Progress
+                                  size="sm"
+                                  isIndeterminate
+                                  color='secondary'
+                                  aria-label="Loading..."
+                                  className="max-w-md"
+                                />:
+              <Button onClick={onFileUpload} color="secondary" disabled={uploading} auto style={{ width: '50%' }}>
+               Upload!
+>>>>>>> 9d1cfea79dc3abe9a4e42e7596919a200514af9c
               </Button>
             )}
             <p>{uploadStatus}</p>
