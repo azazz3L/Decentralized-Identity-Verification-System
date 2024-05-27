@@ -20,6 +20,7 @@ import { Slide} from 'react-toastify';
 import UserPage from './components/UserPage';
 import LoadingSpinner from './components/LoadingSpinner';
 import "./components/Homepage.css"; // Make sure this CSS file contains the updated styles
+import PDFUpload from './components/PDFUpload';
 
 
   // Alert
@@ -319,7 +320,7 @@ useEffect(() => {
                     <>
                       <div className="container">
                         <h3>User Does Not Exists</h3>
-                        <Encrypt accountAddress={address} setAccountAddress={setAccountAddress}/>
+                        <PDFUpload />
                       </div>
                     </>
                   )}
