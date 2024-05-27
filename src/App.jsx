@@ -321,10 +321,8 @@ useEffect(() => {
                     </>
                   ) : (
                     <>
-                      <div className="container">
-                        <h3>User Does Not Exists</h3>
-                        <PDFUpload />
-                      </div>
+                      <PDFUpload accountAddress={address} setAccountAddress={setAccountAddress} jsonObject={setJsonObject} setUserData={setUserData}/>
+                      {jsonObject && <Encrypt accountAddress={address} setAccountAddress={setAccountAddress} userData={userData} />}
                     </>
                   )}
             </>

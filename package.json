@@ -20,7 +20,6 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
     "@mui/styled-engine-sc": "^6.0.0-alpha.5",
-    "@nextui-org/input": "^2.1.21",
     "@nextui-org/react": "^2.2.1",
     "@thirdweb-dev/react": "^4.0.8",
     "@thirdweb-dev/sdk": "^4.0.7",
