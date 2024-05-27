@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import { Progress } from "@nextui-org/react";
-
+import { Link } from "@nextui-org/react";
 
 function FileUpload(props) {
   const [file, setFile] = useState(null);
@@ -73,8 +73,15 @@ function FileUpload(props) {
         >
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <div className="flex flex-col items-center mb-5">
-              <h4 className="font-bold text-large">USER DOES NOT EXIST</h4>
-              <h4 className="font-bold text-large">Upload Your Aadhar Card PDF From UIDAI</h4>
+            <h2 className="font-bold text-large">USER DOES NOT EXIST</h2>
+              <h5 className="font-bold text-large">DOWNLOAD THE AADHAR CARD PDF FROM{" "}
+              <Link className="font-bold text-large" isExternal={true} showAnchorIcon={true} href={`https://uidai.gov.in`}>
+                  UIDAI
+              </Link>
+              </h5>
+              <h5 className="font-bold text-large">
+                UPLOAD THE DOWNLOADED AADHAR CARD PDF HERE & MAKE SURE IT IS UNLOCKED
+              </h5>
             </div>
             <input
               type="file"
